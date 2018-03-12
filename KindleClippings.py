@@ -7,8 +7,8 @@ SOURCE_FILE = '/Volumes/Kindle/documents/My Clippings.txt'
 
 def remove_chars(s):
     """
-    This is a utility function that removes special characters from the string, so that it can 
-    become a valid filename. 
+    This is a utility function that removes special characters from the string, so that it can
+    become a valid filename.
     :param s: input string
     :return: the input string, stripped of special characters
     """
@@ -33,7 +33,7 @@ def parse_highlights(dirname="kindle_clippings"):
     - a blank line
     - clipping text
     - a divider made up of equals signs
-    Thus we can parse the clippings, and organise them by book. 
+    Thus we can parse the clippings, and organise them by book.
     :param dirname: the output directory where all of organised highlights will go
     :return: organises kindle highlights by book .
     """
