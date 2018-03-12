@@ -11,4 +11,4 @@ My solution does require regularity, but it is a lot more robust to irregularity
 
 ## Issues
 
-When you make a highlight on kindle, then delete it, it still gets stored into clippings. So if you make a wrong highlight and redo it, you'll end up with multiple very similar highlights. I haven't yet decided whether this is worth fixing, but in my workflow it's not very important. 
+When you make a highlight on kindle, then delete it, it still gets stored into clippings. So if you make a wrong highlight and redo it, you'll end up with multiple very similar highlights. I haven't yet decided whether this is worth fixing, but in my workflow it's not very important.
