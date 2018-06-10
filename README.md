@@ -1,20 +1,20 @@
-<p align="left">
+<p align="center">
     <img width=60% src="https://github.com/robertmartin8/KindleClippings/blob/master/logo.png">
 </p>
 
 <!-- buttons -->
-<p align="left">
+<p align="center">
     <a href="https://www.python.org/">
-        <img src="https://img.shields.io/badge/python-v2,3-brightgreen.svg?style=flat-square"
+        <img src="https://img.shields.io/badge/python-v2,3-brightgreen.svg"
             alt="python"></a> &nbsp;
     <!-- <a href="https://pypi.org/project/PyPortfolioOpt/">
         <img src="https://img.shields.io/badge/pypi-v0.1.0rc1-brightgreen.svg?style=flat-square"
             alt="python"></a> &nbsp; -->
     <a href="https://opensource.org/licenses/MIT">
-        <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square"
+        <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg"
             alt="MIT license"></a> &nbsp;
     <a href="https://github.com/robertmartin8/PyPortfolioOpt/graphs/commit-activity">
-        <img src="https://img.shields.io/badge/Maintained%3F-yes-brightgreen.svg?style=flat-square"
+        <img src="https://img.shields.io/badge/Maintained%3F-yes-brightgreen.svg"
             alt="maintained"></a> &nbsp;
 </p>
 
