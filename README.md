@@ -1,9 +1,9 @@
-<p align="center">
+<p align="left">
     <img width=60% src="https://github.com/robertmartin8/KindleClippings/blob/master/logo.png">
 </p>
 
 <!-- buttons -->
-<p align="center">
+<p align="left">
     <a href="https://www.python.org/">
         <img src="https://img.shields.io/badge/python-v2,3-brightgreen.svg?style=flat-square"
             alt="python"></a> &nbsp;
