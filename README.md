@@ -34,7 +34,7 @@ The result is a new folder with individual text files per book:
 
 In my workflow, I then copy these into Evernote, but the whole point is that you are now free to do whatever you want.
 
-## Background
+## Background
 
 When you make highlights or add bookmarks on your kindle, they are stored to a text file on the kindle called `My Clippings.txt`. This has a regular format, which means that it can be parsed:
 
@@ -62,7 +62,7 @@ Who knows who might be the target of the well-read man?
 
 The only requirement for this project is to have python (either python 2 or python 3) installed on your system. For users on macOS, you don't have to worry about this because it is already installed. On Windows, python can be installed following the instructions [here](http://docs.python-guide.org/en/latest/starting/install3/win/).
 
-## Basic usage
+## Basic usage
 
 It is recommended that you download the `KindleClippings.py` and place it either in your home directory or the desktop. Connect your kindle, and make sure it exists in your filesystem. Then, open up your terminal/shell.
 
