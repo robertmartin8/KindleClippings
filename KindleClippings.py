@@ -73,6 +73,7 @@ def parse_clippings(source_file, end_directory):
             if outfile_name not in (list(output_files) + os.listdir(end_directory)):
                 mode = "w"
                 output_files.add(outfile_name)
+                current_text = ""
             else:
                 # If the title exists, read it as text so that we won't append duplicates
                 mode = "a"
@@ -86,9 +87,9 @@ def parse_clippings(source_file, end_directory):
                 if clipping_text not in current_text:
                     outfile.write(clipping_text + "\n\n...\n\n")
 
-    print_function("\nExported titles:\n")
+    print("\nExported titles:\n")
     for i in output_files:
-        print_function(i)
+        print(i)
 
 
 if __name__ == "__main__":
@@ -100,7 +101,9 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    if args.source[-1] == "/":
+    if args.source[-4:] == ".txt":
+        source_file = args.source
+    elif args.source[-1] == "/":
         source_file = args.source + "documents/My Clippings.txt"
     else:
         source_file = args.source + "/documents/My Clippings.txt"
@@ -108,6 +111,6 @@ if __name__ == "__main__":
     if args.destination[-1] == "/":
         destination = args.destination + "KindleClippings/"
     else:
-        destination = args.destination + "/KindleClippings"
+        destination = args.destination + "/KindleClippings/"
 
     parse_clippings(source_file, destination)
