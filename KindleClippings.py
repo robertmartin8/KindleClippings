@@ -1,9 +1,7 @@
 from __future__ import print_function
 import re
 import os
-
-# Change this depending on your computer / kindle version
-SOURCE_FILE = "/Volumes/Kindle/documents/My Clippings.txt"
+import argparse
 
 
 def remove_chars(s):
@@ -26,7 +24,7 @@ def remove_chars(s):
     return s
 
 
-def parse_highlights(dirname="kindle_clippings"):
+def parse_clippings(source_file, end_directory):
     """
     Each clipping always consists of 5 lines:
     - title line
@@ -36,24 +34,25 @@ def parse_highlights(dirname="kindle_clippings"):
     - a divider made up of equals signs
     Thus we can parse the clippings, and organise them by book.
 
-    :param dirname: the output directory where all of organised highlights will go
-    :type dirname: str
+    :param end_directory: the output directory where all of organised highlights will go
+    :type end_directory: str
     :return: organises kindle highlights by book .
     """
+
     # Check that the source file (on the kindle) exists
-    if not os.path.isfile(SOURCE_FILE):
-        raise IOError("ERROR: cannot find " + SOURCE_FILE)
+    if not os.path.isfile(source_file):
+        raise IOError("ERROR: cannot find " + source_file)
 
     # Create the output directory if it doesn't exist
-    if not os.path.exists(dirname):
-        os.makedirs(dirname)
+    if not os.path.exists(end_directory):
+        os.makedirs(end_directory)
 
     # This will keep track of the titles that we have already processed
     output_files = set()
     title = ""
 
     # Open clippings textfile and read data in lines
-    with open(SOURCE_FILE, "r") as f:
+    with open(source_file, "r") as f:
         # Individual highlights within clippings are separated by ==========
         for highlight in f.read().split("=========="):
             # For each highlight, we split it into the lines
@@ -68,10 +67,10 @@ def parse_highlights(dirname="kindle_clippings"):
 
             # Remove characters and create path
             outfile_name = remove_chars(title) + ".txt"
-            path = dirname + "/" + outfile_name
+            path = end_directory + "/" + outfile_name
 
             # If we haven't seen title yet, set mode to write. Else, set to append.
-            if outfile_name not in (list(output_files) + os.listdir(dirname)):
+            if outfile_name not in (list(output_files) + os.listdir(end_directory)):
                 mode = "w"
                 output_files.add(outfile_name)
             else:
@@ -85,8 +84,30 @@ def parse_highlights(dirname="kindle_clippings"):
             with open(path, mode) as outfile:
                 # Write out the the clippings text if it's not already there
                 if clipping_text not in current_text:
-                    outfile.write(f"{clipping_text}\n\n...\n\n")
+                    outfile.write(clipping_text + "\n\n...\n\n")
 
     print_function("\nExported titles:\n")
     for i in output_files:
         print_function(i)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Extract kindle clippings into a folder with nice text files"
+    )
+    parser.add_argument("-source", type=str, default="/Volumes/Kindle")
+    parser.add_argument("-destination", type=str, default="/")
+
+    args = parser.parse_args()
+
+    if args.source[-1] == "/":
+        source_file = args.source + "documents/My Clippings.txt"
+    else:
+        source_file = args.source + "/documents/My Clippings.txt"
+
+    if args.destination[-1] == "/":
+        destination = args.destination + "KindleClippings/"
+    else:
+        destination = args.destination + "/KindleClippings"
+
+    parse_clippings(source_file, destination)
