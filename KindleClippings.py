@@ -52,7 +52,7 @@ def parse_clippings(source_file, end_directory):
     title = ""
 
     # Open clippings textfile and read data in lines
-    with open(source_file, "r") as f:
+    with open(source_file, "r", encoding="utf8") as f:
         # Individual highlights within clippings are separated by ==========
         for highlight in f.read().split("=========="):
             # For each highlight, we split it into the lines
