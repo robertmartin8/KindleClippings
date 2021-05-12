@@ -25,7 +25,7 @@ def remove_chars(s):
     return s
 
 
-def parse_clippings(source_file, end_directory):
+def parse_clippings(source_file, end_directory, encoding="utf-8"):
     """
     Each clipping always consists of 5 lines:
     - title line
@@ -53,7 +53,7 @@ def parse_clippings(source_file, end_directory):
     title = ""
 
     # Open clippings textfile and read data in lines
-    with io.open(source_file, "r", encoding="utf8") as f:
+    with io.open(source_file, "r", encoding=encoding, errors="ignore") as f:
         # Individual highlights within clippings are separated by ==========
         for highlight in f.read().split("=========="):
             # For each highlight, we split it into the lines
@@ -78,12 +78,12 @@ def parse_clippings(source_file, end_directory):
             else:
                 # If the title exists, read it as text so that we won't append duplicates
                 mode = "a"
-                with io.open(path, "r", encoding="utf-8") as textfile:
+                with io.open(path, "r", encoding=encoding, errors="ignore") as textfile:
                     current_text = textfile.read()
 
             clipping_text = lines[3]
 
-            with io.open(path, mode, encoding="utf-8") as outfile:
+            with io.open(path, mode, encoding=encoding, errors="ignore") as outfile:
                 # Write out the the clippings text if it's not already there
                 if clipping_text not in current_text:
                     outfile.write(clipping_text + "\n\n...\n\n")
@@ -99,7 +99,7 @@ if __name__ == "__main__":
     )
     parser.add_argument("-source", type=str, default="/Volumes/Kindle")
     parser.add_argument("-destination", type=str, default="/")
-
+    parser.add_argument("-encoding", type=str, default="utf8")
     args = parser.parse_args()
 
     if args.source[-4:] == ".txt":
@@ -114,4 +114,4 @@ if __name__ == "__main__":
     else:
         destination = args.destination + "/KindleClippings/"
 
-    parse_clippings(source_file, destination)
+    parse_clippings(source_file, destination, args.encoding)
