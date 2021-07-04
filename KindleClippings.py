@@ -5,7 +5,7 @@ import os
 import argparse
 
 
-def remove_chars(s):
+def remove_chars(s, end_directory=""):
     """
     This is a utility function that removes special characters from the string, so that it can
     become a valid filename.
@@ -22,6 +22,9 @@ def remove_chars(s):
     s = re.sub(r"[^a-zA-Z\d\s;,_-]+", "", s)
     # Trim off anything that isn't a word at the start & end
     s = re.sub(r"^\W+|\W+$", "", s)
+
+    max_length = 245 - len(end_directory)  # max file size limited to 255.
+    s = s[:max_length]
     return s
 
 
@@ -67,7 +70,7 @@ def parse_clippings(source_file, end_directory, encoding="utf-8"):
                 title = title[1:]
 
             # Remove characters and create path
-            outfile_name = remove_chars(title) + ".txt"
+            outfile_name = remove_chars(title, end_directory) + ".txt"
             path = end_directory + "/" + outfile_name
 
             # If we haven't seen title yet, set mode to write. Else, set to append.
