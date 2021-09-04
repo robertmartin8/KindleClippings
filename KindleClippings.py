@@ -101,7 +101,7 @@ if __name__ == "__main__":
         description="Extract kindle clippings into a folder with nice text files"
     )
     parser.add_argument("-source", type=str, default="/Volumes/Kindle")
-    parser.add_argument("-destination", type=str, default="/")
+    parser.add_argument("-destination", type=str, default="./")
     parser.add_argument("-encoding", type=str, default="utf8")
     args = parser.parse_args()
 
