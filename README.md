@@ -22,6 +22,9 @@ One of the many great things about kindles is that you can highlight parts of yo
 
 KindleClippings is a utility born out of personal need, which fetches any highlights that you have made on your kindle, and organises them into plain text files per book. It is run from the command line using:
 
+Can specify *format* which will create additional files of that specified type.
+Currently added support for pdf and docx.
+
 ```bash
 python KindleClippings.py
 ```
@@ -62,6 +65,12 @@ Who knows who might be the target of the well-read man?
 
 The only requirement for this project is to have python (either python 2 or python 3) installed on your system. For users on macOS, you don't have to worry about this because it is already installed. On Windows, python can be installed following the instructions [here](http://docs.python-guide.org/en/latest/starting/install3/win/).
 
+For pdf and docx conversion, it requires library. It can be installed using below pip command
+```bash
+pip install -r requirements.txt
+```
+
+
 ## Basic usage
 
 It is recommended that you download the `KindleClippings.py` and place it either in your home directory or the desktop. Connect your kindle, and make sure it exists in your filesystem. Then, open up your terminal/shell.
@@ -97,6 +106,13 @@ Heart of Darkness - Joseph Conrad.txt
 The Meaning of It All - Richard P Feynman.txt
 The Selfish Gene - 30th Anniversary Edition - Richard Dawkins.txt
 ```
+
+format usage: formatter will run after txt file are created so apart from txt file, it will also create file of specified type
+
+```bash
+python KindleClippings.py -source C:\Kindle -format pdf
+```
+
 
 ## About
 
