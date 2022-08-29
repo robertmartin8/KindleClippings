@@ -20,7 +20,7 @@ def remove_chars(s, end_directory=""):
     # Replace ( ) with a hyphen so "this (text)" becomes "this - text"
     s = re.sub(r"\((.+?)\)", r"- \1", s)
     # Delete filename chars tht are not alphanumeric or ; , _ -
-    s = re.sub(r"[^a-zA-Z\d\s;,_-]+", "", s)
+    s = re.sub(r"[^a-zA-Z\d\s\w;,_-]+", "", s)
     # Trim off anything that isn't a word at the start & end
     s = re.sub(r"^\W+|\W+$", "", s)
 
