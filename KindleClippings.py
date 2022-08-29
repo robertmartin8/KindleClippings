@@ -175,9 +175,9 @@ if __name__ == "__main__":
     if args.source[-4:] == ".txt":
         source_file = args.source
     elif args.source[-1] == "/":
-        source_file = args.source + "documents/My Clippings.txt"
+        source_file = args.source + "/My Clippings.txt"
     else:
-        source_file = args.source + "/documents/My Clippings.txt"
+        source_file = args.source + "/My Clippings.txt"
 
     if args.destination[-1] == "/":
         destination = args.destination + "KindleClippings/"
