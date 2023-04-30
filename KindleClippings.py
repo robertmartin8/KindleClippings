@@ -29,6 +29,65 @@ def remove_chars(s, end_directory=""):
     return s
 
 
+def insert_line_break_in_pdf(pdf_file: FPDF, num_breaks: int = 1) -> FPDF:
+    """
+    Inserts a line break in a pdf for num_breaks times
+    """
+    while num_breaks != 0:
+        pdf_file.multi_cell(0, 5, "", 0)
+        num_breaks -= 1
+
+    return pdf_file
+
+def insert_bar_separator_in_pdf(pdf_file: FPDF):
+    """
+    Inserts a bar separator in a pdf, useful to separate highlights
+    """
+    pdf_file = insert_line_break_in_pdf(pdf_file)
+    pdf_file.set_draw_color(191, 191, 191)
+    pdf_file.line(40, pdf_file.y, 150, pdf_file.y)
+    pdf_file = insert_line_break_in_pdf(pdf_file)
+
+    return pdf_file
+
+
+def prepare_pdf_document(highlights: str, include_clip_meta = False, title: str = "Your Notes And Highlights") -> FPDF:
+    """
+    Will create pdf document from the notes
+
+    :param highlights:
+    :return: FPDF
+    """
+    pdf_file = FPDF()
+    pdf_file.add_page()
+    pdf_file.add_font("lisboa", '', 'media/Lisboa.ttf', uni=True)
+    pdf_file.set_font("lisboa", '', 22)
+    pdf_file.set_margins(25, 40, 25)
+    pdf_file = insert_line_break_in_pdf(pdf_file, 3)
+    pdf_file.multi_cell(0, 5, title, align="C")
+    pdf_file = insert_line_break_in_pdf(pdf_file, 2)
+    
+    meta_regex_pattern = r"(Your.*\| Added on)"
+    for highlight_line in highlights:
+        # create muti-cell pdf object and add text to it
+        if re.search(meta_regex_pattern, highlight_line):
+            pdf_file.set_font("lisboa", '', 11)
+            pdf_file.set_text_color(77, 77, 77)
+            pdf_file.multi_cell(0, 5, highlight_line, 0)
+            pdf_file = insert_bar_separator_in_pdf(pdf_file)
+        elif len(highlight_line) < 10:
+            if not include_clip_meta and highlight_line == "...":
+                pdf_file = insert_bar_separator_in_pdf(pdf_file)
+            else:
+                continue
+        else:
+            pdf_file.set_font("lisboa", '', 15)
+            pdf_file.set_text_color(0, 0, 0)
+            pdf_file.multi_cell(0, 5, highlight_line, 0)
+
+    return pdf_file
+
+
 def convert_to_format(path, file_name, format, include_clip_meta=False):
     """
     Will get text file and will convert to specified output
@@ -39,18 +98,11 @@ def convert_to_format(path, file_name, format, include_clip_meta=False):
     :return: name of the file created
     """
     output_file_name = file_name[0:-4] + "." + format
-    with open(path + file_name, "r+") as txt_file:
+    with open(path + file_name, "r+", encoding="utf8") as txt_file:
 
         paragraph = txt_file.read().split("\n")
         if format == "pdf":
-            pdf_file = FPDF()
-            pdf_file.add_page()
-            pdf_file.add_font("mono", '', 'media/NotoMono-Regular.ttf', uni=True)
-            pdf_file.set_font("mono", '', 11)
-
-            for para in paragraph:
-                # create muti-cell pdf object and add text to it
-                pdf_file.multi_cell(0, 5, para, 0)
+            pdf_file = prepare_pdf_document(paragraph, include_clip_meta, file_name[:-4])
             pdf_file.output(path + output_file_name)
 
         elif format == "docx":
