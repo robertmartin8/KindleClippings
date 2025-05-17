@@ -98,12 +98,14 @@ def convert_to_format(path, file_name, format, include_clip_meta=False):
     :return: name of the file created
     """
     output_file_name = file_name[0:-4] + "." + format
-    with open(path + file_name, "r+", encoding="utf8") as txt_file:
+    txt_path = os.path.join(path, file_name)
+    with open(txt_path, "r+", encoding="utf8") as txt_file:
 
         paragraph = txt_file.read().split("\n")
         if format == "pdf":
             pdf_file = prepare_pdf_document(paragraph, include_clip_meta, file_name[:-4])
-            pdf_file.output(path + output_file_name)
+            pdf_path = os.path.join(path, output_file_name)
+            pdf_file.output(pdf_path)
 
         elif format == "docx":
             docx_file = docx.Document()
@@ -112,7 +114,8 @@ def convert_to_format(path, file_name, format, include_clip_meta=False):
             for para in paragraph:
                 # add a paragraph and store the object in a variable
                 docx_file.add_paragraph(para)
-            docx_file.save(path + output_file_name)
+            docx_path = os.path.join(path, output_file_name)
+            docx_file.save(docx_path)
 
     return output_file_name
 
@@ -128,12 +131,17 @@ def create_file_by_type(end_directory, format, include_clip_meta=False):
     """
     output_files = []
 
-    # get files in and directory
-    files = [f for f in os.listdir(end_directory) if os.path.isfile(end_directory + f)]
+    # get files in end_directory
+    files = [
+        f for f in os.listdir(end_directory)
+        if os.path.isfile(os.path.join(end_directory, f))
+    ]
 
     for file in files:
         if file[-3:] == "txt":
-            output_files.append(convert_to_format(end_directory, file, format, include_clip_meta))
+            output_files.append(
+                convert_to_format(end_directory, file, format, include_clip_meta)
+            )
 
     return output_files
 
@@ -161,7 +169,7 @@ def parse_clippings(source_file, end_directory, encoding="utf-8", format="txt", 
 
     # Create the output directory if it doesn't exist
     if not os.path.exists(end_directory):
-        os.makedirs(end_directory)
+        os.makedirs(end_directory, exist_ok=True)
 
     # This will keep track of the titles that we have already processed
     output_files = set()
@@ -185,10 +193,10 @@ def parse_clippings(source_file, end_directory, encoding="utf-8", format="txt", 
 
             # Remove characters and create path
             outfile_name = remove_chars(title, end_directory) + ".txt"
-            path = end_directory + "/" + outfile_name
+            path = os.path.join(end_directory, outfile_name)
 
             # If we haven't seen title yet, set mode to write. Else, set to append.
-            if outfile_name not in (list(output_files) + os.listdir(end_directory)):
+            if outfile_name not in output_files and outfile_name not in os.listdir(end_directory):
                 mode = "w"
                 output_files.add(outfile_name)
                 current_text = ""
@@ -233,16 +241,11 @@ if __name__ == "__main__":
     parser.add_argument("-include_clip_meta", type=bool, default=False)
     args = parser.parse_args()
 
-    if args.source[-4:] == ".txt":
+    if args.source.endswith(".txt"):
         source_file = args.source
-    elif args.source[-1] == "/":
-        source_file = args.source + "/My Clippings.txt"
     else:
-        source_file = args.source + "/My Clippings.txt"
+        source_file = os.path.join(args.source, "My Clippings.txt")
 
-    if args.destination[-1] == "/":
-        destination = args.destination + "KindleClippings/"
-    else:
-        destination = args.destination + "/KindleClippings/"
+    destination = os.path.join(args.destination, "KindleClippings")
 
     parse_clippings(source_file, destination, args.encoding, args.format, args.include_clip_meta)
