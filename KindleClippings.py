@@ -171,8 +171,10 @@ def parse_clippings(source_file, end_directory, encoding="utf-8", format="txt", 
         for highlight in f.read().split("=========="):
             # For each highlight, we split it into the lines
             lines = highlight.split("\n")[1:]
-            # Don't try to write if we have no body
-            if len(lines) < 3 or lines[3] == "":
+            # Don't try to write if there is no body text
+            # A valid clipping should have at least 4 lines:
+            # title, metadata, blank line and body text
+            if len(lines) < 4 or lines[3].strip() == "":
                 continue
             # Set title and trim the hex character
             title = lines[0]
@@ -210,8 +212,8 @@ def parse_clippings(source_file, end_directory, encoding="utf-8", format="txt", 
         formatted_out_files = create_file_by_type(end_directory, format, include_clip_meta)
         output_files.update(formatted_out_files)
     else:
+        # If an unsupported format was requested just create the text files
         print("Invalid format mentioned. Only txt file will be created")
-        args.format = "txt"
 
     print("\nExported titles:\n")
     for i in output_files:
