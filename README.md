@@ -94,7 +94,7 @@ On windows, this might look something like:
 python KindleClippings.py -source C:\Kindle -destination \
 ```
 
-If the parsing is succesful, the script will print all of the exported titles
+If the parsing is successful, the script will print all of the exported titles
 
 ```txt
 Exported titles:
