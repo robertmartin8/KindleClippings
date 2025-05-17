@@ -69,7 +69,7 @@ def prepare_pdf_document(highlights: str, include_clip_meta = False, title: str 
     
     meta_regex_pattern = r"(Your.*\| Added on)"
     for highlight_line in highlights:
-        # create muti-cell pdf object and add text to it
+        # create multi-cell pdf object and add text to it
         if re.search(meta_regex_pattern, highlight_line):
             pdf_file.set_font("lisboa", '', 11)
             pdf_file.set_text_color(77, 77, 77)
