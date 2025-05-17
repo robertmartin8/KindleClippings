@@ -151,6 +151,8 @@ def parse_clippings(source_file, end_directory, encoding="utf-8", format="txt", 
     :param end_directory: the output directory where all of organised highlights will go
     :type end_directory: str
     :return: organises kindle highlights by book .
+    :param format: output file format. Only "pdf" or "docx" create additional files.
+                    Any other value is treated as "txt".
     """
 
     # Check that the source file (on the kindle) exists
@@ -207,13 +209,13 @@ def parse_clippings(source_file, end_directory, encoding="utf-8", format="txt", 
                         outfile.write(clip_meta + "\n")
                     outfile.write("\n...\n\n")
 
-    # create additional file based on format
-    if format in ["pdf","docx"]:
+    # create additional files based on requested format
+    if format in ["pdf", "docx"]:
         formatted_out_files = create_file_by_type(end_directory, format, include_clip_meta)
         output_files.update(formatted_out_files)
-    else:
-        # If an unsupported format was requested just create the text files
-        print("Invalid format mentioned. Only txt file will be created")
+    elif format != "txt":
+        print("Invalid format specified. Defaulting to txt.")
+        format = "txt"
 
     print("\nExported titles:\n")
     for i in output_files:
