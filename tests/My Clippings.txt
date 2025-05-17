@@ -1,0 +1,11 @@
+==========
+Example Title: The Beginning (John Doe)
+- Your Highlight on page 12 | location 123-124 | Added on Monday, 1 January 2020 12:00:00
+
+This is a highlight text.
+==========
+Another Book? & Something & Else (Jane Smith)
+- Your Highlight at location 200 | Added on Tuesday, 2 February 2021 13:00:00
+
+Interesting highlight & note?
+==========
