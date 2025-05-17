@@ -22,8 +22,9 @@ One of the many great things about kindles is that you can highlight parts of yo
 
 KindleClippings is a utility born out of personal need, which fetches any highlights that you have made on your kindle, and organises them into plain text files per book. It is run from the command line using:
 
-Can specify *format* which will create additional files of that specified type.
-Currently added support for pdf and docx.
+You can use the `-format` option to generate additional files in that format.
+Only `pdf` and `docx` are supported. Any other value will fall back to plain
+text output.
 
 ```bash
 python KindleClippings.py
@@ -93,7 +94,7 @@ On windows, this might look something like:
 python KindleClippings.py -source C:\Kindle -destination \
 ```
 
-If the parsing is succesful, the script will print all of the exported titles
+If the parsing is successful, the script will print all of the exported titles
 
 ```txt
 Exported titles:
@@ -107,11 +108,13 @@ The Meaning of It All - Richard P Feynman.txt
 The Selfish Gene - 30th Anniversary Edition - Richard Dawkins.txt
 ```
 
-format usage: formatter will run after txt file are created so apart from txt file, it will also create file of specified type
+Use the `-format` flag after exporting text files to also create a PDF or DOCX
+version:
 
 ```bash
 python KindleClippings.py -source C:\Kindle -format pdf
 ```
+If any other value is passed to `-format`, the script simply exports text files.
 
 
 ## About

@@ -69,7 +69,7 @@ def prepare_pdf_document(highlights: str, include_clip_meta = False, title: str 
     
     meta_regex_pattern = r"(Your.*\| Added on)"
     for highlight_line in highlights:
-        # create muti-cell pdf object and add text to it
+        # create multi-cell pdf object and add text to it
         if re.search(meta_regex_pattern, highlight_line):
             pdf_file.set_font("lisboa", '', 11)
             pdf_file.set_text_color(77, 77, 77)
@@ -151,6 +151,8 @@ def parse_clippings(source_file, end_directory, encoding="utf-8", format="txt", 
     :param end_directory: the output directory where all of organised highlights will go
     :type end_directory: str
     :return: organises kindle highlights by book .
+    :param format: output file format. Only "pdf" or "docx" create additional files.
+                    Any other value is treated as "txt".
     """
 
     # Check that the source file (on the kindle) exists
@@ -171,8 +173,10 @@ def parse_clippings(source_file, end_directory, encoding="utf-8", format="txt", 
         for highlight in f.read().split("=========="):
             # For each highlight, we split it into the lines
             lines = highlight.split("\n")[1:]
-            # Don't try to write if we have no body
-            if len(lines) < 3 or lines[3] == "":
+            # Don't try to write if there is no body text
+            # A valid clipping should have at least 4 lines:
+            # title, metadata, blank line and body text
+            if len(lines) < 4 or lines[3].strip() == "":
                 continue
             # Set title and trim the hex character
             title = lines[0]
@@ -205,13 +209,13 @@ def parse_clippings(source_file, end_directory, encoding="utf-8", format="txt", 
                         outfile.write(clip_meta + "\n")
                     outfile.write("\n...\n\n")
 
-    # create additional file based on format
-    if format in ["pdf","docx"]:
+    # create additional files based on requested format
+    if format in ["pdf", "docx"]:
         formatted_out_files = create_file_by_type(end_directory, format, include_clip_meta)
         output_files.update(formatted_out_files)
-    else:
-        print("Invalid format mentioned. Only txt file will be created")
-        args.format = "txt"
+    elif format != "txt":
+        print("Invalid format specified. Defaulting to txt.")
+        format = "txt"
 
     print("\nExported titles:\n")
     for i in output_files:
