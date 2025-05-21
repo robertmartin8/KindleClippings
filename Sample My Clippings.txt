@@ -1,0 +1,22 @@
+==========
+The Great Gatsby (F. Scott Fitzgerald)
+- Your Highlight on page 15 | location 100-102 | Added on Monday, 01 January 2023 10:00:00
+
+This is a highlight from The Great Gatsby.
+==========
+Moby Dick (Herman Melville)
+- Your Bookmark at location 200 | Added on Tuesday, 02 January 2023 11:00:00
+
+==========
+Moby Dick (Herman Melville)
+- Your Highlight at location 210-215 | Added on Tuesday, 02 January 2023 11:05:00
+
+This is a highlight from Moby Dick.
+It has multiple lines.
+This is the second line.
+==========
+Pride and Prejudice (Jane Austen)
+- Your Highlight on page 50 | location 300-301 | Added on Wednesday, 03 January 2023 12:00:00
+
+A highlight from Pride and Prejudice.
+==========

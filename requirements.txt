@@ -1,2 +1,2 @@
-FPDF
-python-docx
+python-docx==1.1.2
+fpdf2==2.8.3

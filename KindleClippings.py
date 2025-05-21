@@ -1,4 +1,3 @@
-from __future__ import print_function
 import re
 import io
 import os
@@ -29,28 +28,33 @@ def remove_chars(s, end_directory=""):
     return s
 
 
-def convert_to_format(path, file_name, format):
+def convert_to_format(path, file_name, format, encoding="utf-8"):
     """
     Will get text file and will convert to specified output
 
     :param path:
     :param file_name:
     :param format:
+    :param encoding:
     :return: name of the file created
     """
     output_file_name = file_name[0:-4] + "." + format
-    with open(path + file_name, "r+") as txt_file:
+    with io.open(path + file_name, "r", encoding=encoding, errors="ignore") as txt_file:
 
         paragraph = txt_file.read().split("\n")
         if format == "pdf":
             pdf_file = FPDF()
             pdf_file.add_page()
-            pdf_file.add_font("mono", '', 'media/NotoMono-Regular.ttf', uni=True)
+            # Construct absolute path for the font file
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            font_path = os.path.join(script_dir, 'media', 'NotoMono-Regular.ttf')
+            pdf_file.add_font("mono", '', font_path, uni=True)
             pdf_file.set_font("mono", '', 11)
 
             for para in paragraph:
                 # create muti-cell pdf object and add text to it
-                pdf_file.multi_cell(0, 5, para, 0)
+                # Using effective page width (A4 210mm - 2*10mm margin)
+                pdf_file.multi_cell(190, 5, para, 0)
             pdf_file.output(path + output_file_name)
 
         elif format == "docx":
@@ -65,7 +69,7 @@ def convert_to_format(path, file_name, format):
     return output_file_name
 
 
-def create_file_by_type(end_directory, format):
+def create_file_by_type(end_directory, format, encoding="utf-8"):
     """
     Will iterate over all text files and will convert and create file with specified format
     Currently Only pdf and docx are supported
@@ -81,7 +85,7 @@ def create_file_by_type(end_directory, format):
 
     for file in files:
         if file[-3:] == "txt":
-            output_files.append(convert_to_format(end_directory, file, format))
+            output_files.append(convert_to_format(end_directory, file, format, encoding))
 
     return output_files
 
@@ -142,7 +146,8 @@ def parse_clippings(source_file, end_directory, encoding="utf-8", format="txt"):
                 with io.open(path, "r", encoding=encoding, errors="ignore") as textfile:
                     current_text = textfile.read()
 
-            clipping_text = lines[3]
+            # Join all lines of the highlight text and strip leading/trailing whitespace
+            clipping_text = "\n".join(lines[3:]).strip()
 
             with io.open(path, mode, encoding=encoding, errors="ignore") as outfile:
                 # Write out the the clippings text if it's not already there
@@ -151,7 +156,7 @@ def parse_clippings(source_file, end_directory, encoding="utf-8", format="txt"):
 
     # create additional file based on format
     if format in ["pdf","docx"]:
-        formatted_out_files = create_file_by_type(end_directory, format)
+        formatted_out_files = create_file_by_type(end_directory, format, encoding)
         output_files.update(formatted_out_files)
     else:
         print("Invalid format mentioned. Only txt file will be created")
@@ -168,7 +173,7 @@ if __name__ == "__main__":
     )
     parser.add_argument("-source", type=str, default="/Volumes/Kindle")
     parser.add_argument("-destination", type=str, default="./")
-    parser.add_argument("-encoding", type=str, default="utf8")
+    parser.add_argument("-encoding", type=str, default="utf-8")
     parser.add_argument("-format", type=str, default="txt")
     args = parser.parse_args()
 
